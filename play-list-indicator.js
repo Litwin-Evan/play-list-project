@@ -1,3 +1,4 @@
+/// I will put the playlist indicator in the file of the playlist, so that it can be easily imported and used in the playlist component.
 /**
  * Copyright 2026 Evan Litwin
  * @license Apache-2.0, see LICENSE for full text.
@@ -5,38 +6,28 @@
 import { LitElement, html, css } from "lit";
 import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
-import "./play-list-arrow.js";
-import "./play-list-description.js";
-import "./play-list-indicator.js";
 
 /**
  * `play-list-project`
  * 
  * @demo index.html
- * @element play-list-project
+ * @element play-list-indicator
  */
-export class PlayListProject extends DDDSuper(I18NMixin(LitElement)) {
+export class PlayListIndicator extends DDDSuper(I18NMixin(LitElement)) {
 
   static get tag() {
-    return "play-list-project";
+    return "play-list-indicator";
   }
 
   constructor() {
     super();
-    this.topHeading = "Play List Project";
-    this.title = "";
-    this.t = this.t || {};
-    this.t = {
-      ...this.t,
-      title: "Title",
-    };
+    this.direction = "next";
   }
-
   // Lit reactive properties
   static get properties() {
     return {
       ...super.properties,
-      title: { type: String },
+      direction: { type: String, reflect : true},
     };
   }
 
@@ -49,15 +40,6 @@ export class PlayListProject extends DDDSuper(I18NMixin(LitElement)) {
         color: var(--ddd-theme-primary);
         background-color: var(--ddd-theme-accent);
         font-family: var(--ddd-font-navigation);
-      }
-
-      .card {
-        flex: 1;
-        background: var(--ddd-theme-default-slateLight);
-        border-radius: 43px;
-        padding: var(--ddd-spacing-8, 32px) var(--ddd-spacing-6, 24px);
-        min-height: 380px;
-        overflow: hidden;
       }
       .wrapper {
         margin: var(--ddd-spacing-2);
@@ -72,15 +54,14 @@ export class PlayListProject extends DDDSuper(I18NMixin(LitElement)) {
   // Lit render the HTML
   render() {
     return html`
-<div class="wrapper">
-  <div class="card">        
-        <slot @slotchange="${this._onSlotChange}"></slot>
-      </div>
-  <play-list-description heading1="${this.topHeading}" heading2="${this.title}"></play-list-description>
-  <play-list-arrow></play-list-arrow>
-  <slot></slot>
+<div class="arrow-wrapper">
+  <button @click="${() => this.dispatchEvent(new CustomEvent('prev', { bubbles: true, composed: true }))}">&lt;</button>
+  <span class="label">${this.label}<slot></slot></span>
+  <button @click="${() => this.dispatchEvent(new CustomEvent('next', { bubbles: true, composed: true }))}">&gt;</button>
 </div>`;
   }
 }
 
-globalThis.customElements.define(PlayListProject.tag, PlayListProject);
+globalThis.customElements.define(PlayListIndicator.tag, PlayListIndicator);
+
+
