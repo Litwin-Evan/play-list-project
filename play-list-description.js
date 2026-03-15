@@ -21,18 +21,16 @@ export class PlayListDescription extends DDDSuper(I18NMixin(LitElement)) {
 
   constructor() {
     super();
-    this.heading1 = "Heading 1";
-    this.heading2 = "Heading 2";
-    this.description = "This is the description of the playlist.";
+    this.topHeading = "TOP LINE HEADING";
+    this.subHeading = "Slide 1, sub-heading";
   }
 
   // Lit reactive properties
   static get properties() {
     return {
       ...super.properties,
-      heading1: { type: String },
-      heading2: { type: String }, 
-      description: { type: String },
+      topHeading: { type: String, attribute: "top-heading" },
+      subHeading: { type: String, attribute: "second-heading" },
     };
   }
 
@@ -53,6 +51,37 @@ export class PlayListDescription extends DDDSuper(I18NMixin(LitElement)) {
       h3 span {
         font-size: var(--play-list-project-label-font-size, var(--ddd-font-size-s));
       }
+       .blue-line {
+        border: none;
+        height: 2px;
+        width: 75px;
+        background-color: var(--ddd-theme-default-skyBlue);
+        margin-left: var(--ddd-spacing-8);
+          margin-top: var(--ddd-spacing-6);
+      }
+      .top-heading {
+        font-size: var(--play-list-description-top-heading-font-size, var(--ddd-font-size-m));
+        text-transform: uppercase;
+        color: var(--ddd-theme-default-skyBlue);
+        margin-bottom: var(--ddd-spacing-2);
+        margin-left: var(--ddd-spacing-8);
+      }
+      .second-heading {
+        font-size: 50px;
+        text-transform: uppercase;
+        color: var(--ddd-theme-default-beaverBlue);
+        margin-left: var(--ddd-spacing-8);
+        }
+      .content {
+        overflow-y: auto;
+        max-height: 250px;
+        display: block;
+        padding-right: var(--ddd-spacing-4);
+        margin-left: var(--ddd-spacing-8);
+        width: 75%;
+        color: var(--ddd-theme-default-beaverBlue);
+      }
+      
     `];
   }
 
@@ -60,9 +89,12 @@ export class PlayListDescription extends DDDSuper(I18NMixin(LitElement)) {
   render() {
     return html`
 <div class="wrapper">
-  <div class="top-heading">${this.heading1}</div>
-  <div class="second-heading"><span>${this.heading2}</span></div>
-    <div class="description">${this.description}</div>
+  <div class="top-heading">${this.topHeading}</div>
+  <div class="second-heading"><span>${this.subHeading}</span></div>
+  <hr class="blue-line">
+  <div class="content">
+    <slot></slot>
+  </div>
 </div>`;
   }
 }

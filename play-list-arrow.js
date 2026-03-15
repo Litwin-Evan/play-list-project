@@ -1,4 +1,3 @@
-/// I will put the playlist arrow in this file.
 /**
  * Copyright 2026 Evan Litwin
  * @license Apache-2.0, see LICENSE for full text.
@@ -16,21 +15,17 @@ import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
 export class PlayListArrow extends DDDSuper(I18NMixin(LitElement)) {
 
   static get tag() {
-    return "play-list-arrow";
+    return "playlist-arrow";
   }
 
   constructor() {
     super();
-    this.leftArrow = "<";
-    this.rightArrow = ">";
   }
 
   // Lit reactive properties
   static get properties() {
     return {
       ...super.properties,
-        leftArrow: { type: String },
-        rightArrow: { type: String },
     };
   }
 
@@ -40,46 +35,45 @@ export class PlayListArrow extends DDDSuper(I18NMixin(LitElement)) {
     css`
       :host {
         display: block;
-        color: var(--ddd-theme-primary);
-        background-color: var(--ddd-theme-accent);
-        font-family: var(--ddd-font-navigation);
       }
-      .wrapper {
-        margin: var(--ddd-spacing-2);
-        padding: var(--ddd-spacing-4);
+      .prev {
+        position: absolute;
+        left: -20px;
+        top: 45%;
       }
-
-      h3 span {
-        font-size: var(--play-list-project-label-font-size, var(--ddd-font-size-s));
+      .next {
+        position: absolute;
+        right: -30px;
+        top: 45%;
       }
       button {
-        width: 60px;
-        height: 60px;
-        border-radius: var(--ddd-radius-circle);
-        border: solid var(--ddd-theme-default-navy40);
-        border-color: var(--ddd-theme-default-navy40);
-        background-color: transparent;
-        color: black;
+        background-color: white;
+        color: var(--ddd-theme-default-link);
+        border-color: var(--ddd-theme-default-potential0);
+        border-width: 10px;
+        border: solid;
+        padding: var(--ddd-spacing-2) var(--ddd-spacing-4);
         cursor: pointer;
-        font-size: 16px;
-        display: flex;
-        justify-content: center;
-        align-items: center; 
-        display: inline-block;
-        margin: 0 var(--ddd-spacing-15);
-
-    }
-
+        font-size: var(--ddd-font-size-s);
+        border-radius: 50%;
+      }
+      
+      button:hover {
+        opacity: 0.5;
+      }
     `];
   }
 
   // Lit render the HTML
   render() {
     return html`
-<button @click="${() => this.dispatchEvent(new CustomEvent('prev', { bubbles: true, composed: true }))}">${this.leftArrow}</button>
-<span class="label"><slot></slot></span>
-<button @click="${() => this.dispatchEvent(new CustomEvent('next', { bubbles: true, composed: true }))}">${this.rightArrow}</button>`;
+    <div class="wrapper">
+        <button class="prev" @click=${() => this.dispatchEvent(new CustomEvent('prev-clicked', {bubbles: true, composed: true }))}><</button>
+        <button class="next" @click=${() => this.dispatchEvent(new CustomEvent('next-clicked', {bubbles: true, composed: true}))}>></button>
+    </div>
+    `;
   }
+
 }
 
 globalThis.customElements.define(PlayListArrow.tag, PlayListArrow);
